@@ -20,9 +20,7 @@ export class AuthController {
   @UseGuards(AuthGuard('local'))
   @Post('admin/login')
   async login(@Req() req) {
-    console.log(req.body);
-
-    return this.authService.login(req.body);
+    return this.authService.login(req.user);
   }
 
   // Admin change password

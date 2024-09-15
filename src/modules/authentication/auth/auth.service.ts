@@ -1,34 +1,3 @@
-// import { Injectable, UnauthorizedException } from '@nestjs/common';
-// import { JwtService } from '@nestjs/jwt';
-// import * as bcrypt from 'bcryptjs';
-// import { AdminService } from '../admin/admin.service'; // Make sure this imports your Admin service
-
-// @Injectable()
-// export class AuthService {
-//   constructor(
-//     private adminService: AdminService,
-//     private jwtService: JwtService,
-//   ) {}
-
-//   async validateAdmin(email: string, password: string): Promise<any> {
-//     const admin = await this.adminService.findByEmail(email);
-
-//     if (admin && (await bcrypt.compare(password, admin.password))) {
-//       const { password, ...result } = admin.toObject();
-//       return result;
-//     }
-
-//     return null;
-//   }
-
-//   // Generate JWT token after successful validation
-//   async login(admin: any) {
-//     const payload = { email: admin.email, sub: admin._id, role: admin.role };
-//     return {
-//       access_token: this.jwtService.sign(payload),
-//     };
-//   }
-// }
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { AdminService } from '../admin/admin.service';
@@ -46,11 +15,19 @@ export class AuthService {
     if (!admin) {
       throw new UnauthorizedException('Invalid credentials');
     }
+    // console.log('vali', admin);
+
     return admin;
   }
 
   async login(admin: any) {
-    const payload = { email: admin.email, sub: admin.id };
+    const payload = {
+      email: admin.email,
+      _id: admin._id,
+      first_name: admin.first_name,
+      last_name: admin.last_name,
+      featured_image: admin?.featured_image,
+    };
     return {
       access_token: this.jwtService.sign(payload),
     };
