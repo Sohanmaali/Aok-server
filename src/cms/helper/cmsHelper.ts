@@ -7,32 +7,12 @@ export class CmsHelper {
   static async create(req, model) {
     try {
       const data = req.body;
-      const newEntry = new model(data);
-      await newEntry.save();
-      console.log('New entry created:', newEntry);
-      return newEntry;
+
+      console.log('s----------->>', data);
+      return await model.create(data);
     } catch (error) {
       console.error('Error creating new entry:', error);
       throw new Error('Error creating new entry');
-    }
-  }
-
-  // Delete an entry
-  static async delete(req, model) {
-    try {
-      const { id } = req.params;
-      if (!mongoose.Types.ObjectId.isValid(id)) {
-        throw new Error('Invalid ID');
-      }
-      const result = await model.findByIdAndDelete(id);
-      if (!result) {
-        throw new Error('Entry not found');
-      }
-      console.log('Entry deleted:', result);
-      return result;
-    } catch (error) {
-      console.error('Error deleting entry:', error);
-      throw new Error('Error deleting entry');
     }
   }
 
@@ -44,7 +24,9 @@ export class CmsHelper {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('Invalid ID');
       }
-      const updatedEntry = await model.findByIdAndUpdate(id, data, { new: true });
+      const updatedEntry = await model.findByIdAndUpdate(id, data, {
+        new: true,
+      });
       if (!updatedEntry) {
         throw new Error('Entry not found');
       }
@@ -57,7 +39,7 @@ export class CmsHelper {
   }
 
   // Get an entry
-  static async get(req, model) {
+  static async getAll(req, model) {
     try {
       const { id } = req.params;
       if (!mongoose.Types.ObjectId.isValid(id)) {
@@ -73,5 +55,30 @@ export class CmsHelper {
       console.error('Error retrieving entry:', error);
       throw new Error('Error retrieving entry');
     }
+  }
+
+  //MultiTrash
+  static async multiTrash(req, model) {
+    const ids = req.body.ids;
+    const query = { delete_at: new Date() };
+    const data = await model.updateMany({ _id: { $in: ids } }, { $set: query });
+    return data;
+  }
+
+  //MultiRestore
+  static async multiRestore(req, model) {
+    const ids = req.body.ids;
+    const query = { delete_at: null };
+    console.log(ids);
+
+    const data = await model.updateMany({ _id: { $in: ids } }, { $set: query });
+    return data;
+  }
+
+  //MultiDelete
+  static async multiDelete(req, model) {
+    const ids = req.body.ids;
+    const data = await model.deleteMany({ _id: { $in: ids } });
+    return data;
   }
 }
