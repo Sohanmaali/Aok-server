@@ -7,12 +7,15 @@ import {
   Req,
   Res,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { BorrowingService } from './borrowing.service';
 import { JwtAuthGuard } from '../../authentication/auth/jwt-auth.guard';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('borrowing')
 @UseGuards(JwtAuthGuard)
+@UseInterceptors(FileInterceptor('file'))
 export class BorrowingController {
   constructor(private readonly borrowingService: BorrowingService) {}
 
@@ -41,7 +44,7 @@ export class BorrowingController {
       const data = await this.borrowingService.create(req);
 
       return res.status(201).json({
-        message: 'success',
+        status: 'success',
         data: data,
       });
     } catch (error) {

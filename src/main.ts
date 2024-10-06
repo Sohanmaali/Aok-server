@@ -9,16 +9,16 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: 'https://aok-ui.onrender.com', // Specify your frontend URL
+    origin: ['http://localhost:3000', 'https://aok-ui.onrender.com'],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true, // Optional, use if you need to send credentials (cookies, authorization headers, etc.)
+    credentials: true,
   });
   app.setGlobalPrefix('api');
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
-  app.use(express.json()); // Parse application/json
+  app.use(express.json());
   app.use(express.urlencoded({ extended: true })); // Parse URL-encoded data
 
-  await app.listen(3005);
-  console.log('Server is running on http://localhost:3005');
+  await app.listen(process.env.PORT);
+  console.log(`Server is running on http://localhost:${process.env.PORT}`);
 }
 bootstrap();

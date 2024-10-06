@@ -11,11 +11,10 @@ export class AuthService {
   ) {}
 
   async validateAdmin(email: string, password: string): Promise<any> {
-    const admin = {}; // await this.adminService.validateAdmin(email, password);
+    const admin = await this.adminService.validateAdmin(email, password);
     if (!admin) {
       throw new UnauthorizedException('Invalid credentials');
     }
-    // console.log('vali', admin);
 
     return admin;
   }
@@ -24,10 +23,11 @@ export class AuthService {
     const payload = {
       email: admin.email,
       _id: admin._id,
-      first_name: admin.first_name,
-      last_name: admin.last_name,
+      first_name: admin?.first_name,
+      last_name: admin?.last_name,
       featured_image: admin?.featured_image,
     };
+
     return {
       access_token: this.jwtService.sign(payload),
     };

@@ -70,6 +70,6 @@ import { AuthenticationModule } from './modules/authentication/authentication.mo
 export class AppModule {
   constructor() {
     console.log('app module loaded');
-    console.log('process.env.DB_URL:', process.env.DB_URL); // Check if this outputs the correct DB URL
+    console.log('process.env.DB_URL:', process.env.PORT); // Check if this outputs the correct DB URL
   }
 }

@@ -12,7 +12,6 @@ export class CmsHelper {
     try {
       const data = req.body;
 
-      console.log('s----------->>', data);
       return await model.create(data);
     } catch (error) {
       console.error('Error creating new entry:', error);
