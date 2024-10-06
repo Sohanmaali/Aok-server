@@ -43,7 +43,7 @@ export class BorrowingService {
 
   async findOne(req) {
     const id = req.params.id;
-    const data = await this.borrowing.findById({ _id: id });
+    const data = await CmsHelper.findOne(req, this.borrowing);
     return data;
   }
 

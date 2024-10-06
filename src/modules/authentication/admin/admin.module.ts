@@ -1,23 +1,15 @@
-import { forwardRef, Module } from '@nestjs/common';
-import { AdminController } from './admin.controller';
+import { Module } from '@nestjs/common';
 import { AdminService } from './admin.service';
-import { Admin, AdminSchema } from './entities/admin.schema';
-
+import { AdminController } from './admin.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthModule } from '../auth/auth.module';
-import { log } from 'console';
+import { Admin, AdminSchema } from './entities/admin.schema';
 
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Admin', schema: AdminSchema }]),
-    forwardRef(() => AuthModule),
+    MongooseModule.forFeature([{ name: 'Admin', schema: AdminSchema }]), // Registering the Admin model
   ],
-  controllers: [AdminController],
   providers: [AdminService],
-  exports: [AdminService, MongooseModule],
+  controllers: [AdminController],
+  exports: [AdminService], // Export AdminService if needed in other modules
 })
-export class AdminModule {
-  constructor() {
-    log('admin module loaded');
-  }
-}
+export class AdminModule {}

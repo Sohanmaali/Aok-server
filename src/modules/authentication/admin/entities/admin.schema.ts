@@ -1,40 +1,37 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-@Schema()
+@Schema({ timestamps: true }) // Automatically manage createdAt and updatedAt
 export class Admin extends Document {
-  @Prop()
+  @Prop({ required: true }) // Making fields required
   first_name: string;
 
-  @Prop()
+  @Prop({ required: true })
   last_name: string;
+
+  @Prop({ required: true, unique: true }) // Ensure unique email
+  email: string;
+
+  @Prop({ required: true })
+  password: string; // Consider hashing this before saving
 
   @Prop()
   mobile: string;
 
   @Prop()
-  password: string;
-
-  @Prop()
-  email: string;
-
-  @Prop()
-  role: String;
+  role: string;
 
   @Prop()
   address: string;
 
   @Prop()
-  access_token: number;
+  access_token: string; // Change to string if it's a JWT
 
   @Prop()
-  refresh_token: number;
+  refresh_token: string; // Change to string if it's a JWT
 
   @Prop()
   image: string;
-
-  @Prop({ default: Date.now })
-  create_at: Date;
 
   @Prop({ default: null })
   delete_at: Date | null;
