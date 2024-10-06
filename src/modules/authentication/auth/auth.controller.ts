@@ -15,7 +15,9 @@ import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) {
+    console.log('auth controller loaded');
+  }
 
   @UseGuards(AuthGuard('local'))
   @Post('admin/login')
@@ -28,5 +30,10 @@ export class AuthController {
   @Patch('change-password')
   async changePassword(@Request() req, @Body() changePasswordDto: any) {
     //  return this.authService.changePassword(req.user, changePasswordDto);
+  }
+
+  @Post('test')
+  async create(@Request() req) {
+    return { data: 'sohan' }; // this.authService.create(req.body);
   }
 }

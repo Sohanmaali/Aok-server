@@ -3,6 +3,10 @@ import mongoose from 'mongoose';
 export class CmsHelper {
   constructor() {}
 
+  static async findOne(req, model) {
+    return model.findById({ _id: req.params.id });
+  }
+
   // Create a new entry
   static async create(req, model) {
     try {
@@ -24,7 +28,7 @@ export class CmsHelper {
       if (!mongoose.Types.ObjectId.isValid(id)) {
         throw new Error('Invalid ID');
       }
-      const updatedEntry = await model.findByIdAndUpdate(id, data, {
+      const updatedEntry = await model.findByIdAndUpdate({ _id: id }, data, {
         new: true,
       });
       if (!updatedEntry) {

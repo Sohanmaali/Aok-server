@@ -4,8 +4,8 @@ import { AdminService } from './admin.service';
 import { Admin, AdminSchema } from './entities/admin.schema';
 
 import { MongooseModule } from '@nestjs/mongoose';
-import { AuthService } from '../auth/auth.service';
 import { AuthModule } from '../auth/auth.module';
+import { log } from 'console';
 
 @Module({
   imports: [
@@ -16,4 +16,8 @@ import { AuthModule } from '../auth/auth.module';
   providers: [AdminService],
   exports: [AdminService, MongooseModule],
 })
-export class AdminModule {}
+export class AdminModule {
+  constructor() {
+    log('admin module loaded');
+  }
+}
