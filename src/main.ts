@@ -9,7 +9,11 @@ dotenv.config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   app.enableCors({
-    origin: ['http://localhost:3000', 'https://aok-ui.onrender.com'],
+    origin: [
+      'http://localhost:3000',
+      'https://aok-ui.onrender.com',
+      'http://192.168.6.92:3000',
+    ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,
   });
