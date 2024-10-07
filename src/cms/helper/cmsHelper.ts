@@ -1,4 +1,10 @@
 import mongoose from 'mongoose';
+import { Injectable } from '@nestjs/common';
+import * as puppeteer from 'puppeteer';
+import * as hbs from 'hbs';
+import * as fs from 'fs';
+import * as path from 'path';
+import { Buffer } from 'buffer';
 
 export class CmsHelper {
   constructor() {}
@@ -83,5 +89,33 @@ export class CmsHelper {
     const ids = req.body.ids;
     const data = await model.deleteMany({ _id: { $in: ids } });
     return data;
+  }
+
+  static async generatePDF(printData: any): Promise<Buffer> {
+    const data = JSON.parse(JSON.stringify(printData));
+    const templatePath = path.join(
+      __dirname,
+      '..',
+      '../template',
+      'customerBill.hbs',
+    );
+
+    const template = fs.readFileSync(templatePath, 'utf8');
+    const compiledTemplate = hbs.compile(template);
+
+    const html = compiledTemplate(data);
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(html);
+
+    const pdfBuffer = await page.pdf({
+      format: 'A4',
+      printBackground: true,
+    });
+
+    await browser.close();
+
+    return Buffer.from(pdfBuffer);
   }
 }

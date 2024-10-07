@@ -11,6 +11,7 @@ import {
 import { JwtAuthGuard } from '../../authentication/auth/jwt-auth.guard';
 import { BillService } from './bill.service';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { get } from 'http';
 
 @Controller('bill')
 @UseGuards(JwtAuthGuard)
@@ -146,6 +147,27 @@ export class BillController {
       return res.status(500).json({
         status: 'error',
         data: error.message,
+      });
+    }
+  }
+
+  @Get('pdf/:id')
+  async pdf(@Req() req, @Res() res) {
+    // console.log('pdf call');
+    try {
+      const data = await this.billService.printBill(req);
+
+      res.set({
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'inline; filename=bill.pdf', // inline for viewing in browser
+      });
+
+      return res.send(data);
+    } catch (error) {
+      console.log('error  ', error);
+      return res.status(500).json({
+        status: 'error',
+        message: error.message,
       });
     }
   }

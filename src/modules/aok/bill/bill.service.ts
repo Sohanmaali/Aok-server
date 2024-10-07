@@ -69,4 +69,12 @@ export class BillService {
     const data = await CmsHelper.multiDelete(req, this.bill);
     return data;
   }
+
+  async printBill(req) {
+    const reqData = await CmsHelper.findOne(req, this.bill);
+    if (reqData) {
+      return await CmsHelper.generatePDF(reqData);
+    }
+    return null;
+  }
 }

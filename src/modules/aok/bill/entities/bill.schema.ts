@@ -28,6 +28,9 @@ export class Bill extends Document {
   @Prop()
   image: string;
 
+  @Prop()
+  total: number;
+
   @Prop({ default: Date.now }) // Automatically set the creation date
   create_at: Date;
 
