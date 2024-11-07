@@ -8,6 +8,8 @@ import { AuthService } from './auth.service';
 @Injectable()
 export class AdminLocalStrategy extends PassportStrategy(Strategy) {
   constructor(private authService: AuthService) {
+    console.log('local strategy');
+    
     super({ usernameField: 'email' });
   }
 

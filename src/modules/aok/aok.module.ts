@@ -3,9 +3,10 @@ import { AokService } from './aok.service';
 import { AokController } from './aok.controller';
 import { BorrowingModule } from './borrowing/borrowing.module';
 import { BillModule } from './bill/bill.module';
+import { DashboardModule } from './dashboard/dashboard.module';
 
 @Module({
-  imports: [BorrowingModule, BillModule],
+  imports: [BorrowingModule, BillModule, DashboardModule],
   providers: [AokService],
   controllers: [AokController],
 })

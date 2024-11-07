@@ -1,8 +1,8 @@
 export const generateBillNumber = async (req, model): Promise<string> => {
   // Find the last bill number in the Bill collection
   const lastBill = await model
-    .findOne({ bill_number: { $exists: true, $ne: null } }) // Ensure bill_number exists and is not null
-    .sort({ bill_number: -1 }) // Sort by bill_number in descending order
+    .findOne({ bill_number: { $exists: true, $ne: null } }) 
+    .sort({ bill_number: -1 }) 
     .exec();
 
   if (!lastBill || isNaN(parseInt(lastBill.bill_number, 10))) {

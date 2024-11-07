@@ -12,7 +12,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'https://aok-ui.onrender.com',
-      'http://192.168.6.92:3000',
+      'http://192.168.31.127:3000',
     ],
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     credentials: true,

@@ -56,6 +56,27 @@ export class BillController {
     }
   }
 
+  @Get('search')
+  async search(@Req() req, @Res() res) {
+    try {
+      console.log('callign------->>>>');
+
+      const query: any = { delete_at: null };
+      const data = await this.billService.search(req, query);
+
+      return res.status(201).json({
+        status: 'success',
+        data: data,
+      });
+    } catch (error) {
+      console.log('error  ', error);
+      return res.status(500).json({
+        status: 'error',
+        data: error.message,
+      });
+    }
+  }
+
   @Patch()
   async update(@Req() req, @Res() res) {
     try {
